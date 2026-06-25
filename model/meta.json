@@ -1,0 +1,9 @@
+{
+  "img_size": 64,
+  "seq_len": 20,
+  "classes": [
+    "awake",
+    "drowsy"
+  ],
+  "threshold": 0.5
+}
