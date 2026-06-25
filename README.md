@@ -1,8 +1,7 @@
 # Driver Drowsiness Detection System
 
 **CSE303: Machine Learning | SRM University-AP**  
-Madhu Swapnika G · P. Nikitha · Rakshitha Joycey · Hema Latha · G. Sowjanya
-
+Madhu Swapnika G ·
 Real-time drowsiness detection using **MediaPipe FaceMesh** + **Eye Aspect Ratio (EAR)** — no deep learning required, runs on a laptop webcam at 20–30 FPS.
 
 ---
