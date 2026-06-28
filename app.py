@@ -175,9 +175,18 @@ with col_cam:
         key="drowsiness",
         video_processor_factory=DrowsinessProcessor,
         rtc_configuration=RTCConfiguration({"iceServers": [
-            {"urls": ["stun:stun.l.google.com:19302"]},
-            {"urls": ["stun:stun1.l.google.com:19302"]},
-        ]}),
+    {"urls": ["stun:stun.l.google.com:19302"]},
+    {
+        "urls": ["turn:drowsiness-detector.metered.live:80"],
+        "username": "srwaX4DpE6spswZClURGkqGvds1cv-g2q9ZY9pFjBY_-fZfI",
+        "credential": "srwaX4DpE6spswZClURGkqGvds1cv-g2q9ZY9pFjBY_-fZfI"
+    },
+    {
+        "urls": ["turn:drowsiness-detector.metered.live:443"],
+        "username": "srwaX4DpE6spswZClURGkqGvds1cv-g2q9ZY9pFjBY_-fZfI",
+        "credential": "srwaX4DpE6spswZClURGkqGvds1cv-g2q9ZY9pFjBY_-fZfI"
+    }
+]}),
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True,
     )
