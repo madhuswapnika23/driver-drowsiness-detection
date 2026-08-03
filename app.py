@@ -14,10 +14,12 @@ import urllib.request
 from streamlit_webrtc import webrtc_streamer, VideoProcessorBase, RTCConfiguration
 
 # ── thresholds ─────────────────────────────────────────────────────────────────
-EAR_THRESH    = 0.25
-EAR_CONSEC    = 30
+# NOTE: Haar cascade bounding box ratio (height/width) ranges 0.4–1.0 for eyes.
+# Open eye ≈ 0.55–0.90, Closing eye ≈ 0.30–0.50 → threshold at 0.45
+EAR_THRESH    = 0.45
+EAR_CONSEC    = 25
 MAR_THRESH    = 0.65
-FUSION_THRESH = 0.60
+FUSION_THRESH = 0.45
 
 # ── download haar cascades to system temp dir (works on Linux/Windows/HF) ─────
 TMP_DIR           = tempfile.gettempdir()
@@ -80,6 +82,7 @@ class DrowsinessProcessor(VideoProcessorBase):
 
             ear_vals = []
             for (ex, ey, ew, eh) in eyes[:2]:
+                # Haar cascade: ratio = height/width. Lower ratio = flatter = more closed.
                 ratio = round(eh / max(ew, 1), 3)
                 ear_vals.append(ratio)
                 color = (50, 50, 220) if ratio < EAR_THRESH else (255, 200, 0)
@@ -87,11 +90,12 @@ class DrowsinessProcessor(VideoProcessorBase):
 
             if ear_vals:
                 self.ear_val = round(float(np.mean(ear_vals)), 3)
-                ear_s = (
-                    max(0.0, 1.0 - self.ear_val / EAR_THRESH)
-                    if self.ear_val < EAR_THRESH * 1.5
-                    else 0.0
-                )
+                # Score: 1.0 when eye is very closed (ratio→0), 0.0 when open (ratio≥EAR_THRESH)
+                if self.ear_val < EAR_THRESH:
+                    # Eye looks closed: score proportional to how far below threshold
+                    ear_s = max(0.0, 1.0 - (self.ear_val / EAR_THRESH))
+                else:
+                    ear_s = 0.0
                 self.score = round(ear_s, 3)
 
                 if self.score >= FUSION_THRESH:
