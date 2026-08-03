@@ -1,3 +1,14 @@
+---
+title: Driver Drowsiness Detection System
+emoji: 👁️
+colorFrom: blue
+colorTo: red
+sdk: streamlit
+sdk_version: 1.32.0
+app_file: app.py
+pinned: false
+---
+
 # Driver Drowsiness Detection System
 
 **CSE303: Machine Learning | SRM University-AP**  
